@@ -21,7 +21,7 @@ app.add_middleware(
 @app.get('/')
 def main_response():
     return {
-        'data': 'Hello World'
+        'data': 'Hello World Alpha Mare'
     }
 
 

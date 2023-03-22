@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  server:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,6 +12,8 @@ services:
       - "8000:8000"
     networks:
       - fast-network
+    volumes:
+      - ./:/usr/src/app/
   
   nginx:
     container_name: fast-nginx
@@ -20,6 +22,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '80:80'
+    depends_on:
+      - app
     networks:
       - fast-network
 
