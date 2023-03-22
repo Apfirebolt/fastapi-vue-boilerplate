@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 
@@ -17,13 +19,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/client", StaticFiles(directory="client/dist"), name="static")
 
-@app.get('/')
+templates = Jinja2Templates(directory="client/dist")
+
+
+@app.get('/api')
 def main_response():
     return {
         'data': 'Hello World Alpha Mare'
     }
 
 
+@app.get("/{full_path:path}")
+async def serve_vue_app(request: Request, full_path: str):
+    """Serve the vue app bootstrapped by Vite
+    """
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+
+
+    

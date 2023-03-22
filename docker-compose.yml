@@ -27,6 +27,24 @@ services:
     networks:
       - fast-network
 
+  
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: app-client
+    container_name: app-vue-client
+    command: npm run dev
+    volumes:
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - app
+    ports:
+      - "8080:8080"
+    networks:
+      - fast-network
+
 networks:
     fast-network:
         driver: bridge
