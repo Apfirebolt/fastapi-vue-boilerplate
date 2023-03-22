@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fastapi-server
+    container_name: fast-container
+    command: python main.py
+    ports:
+      - "8000:8000"
+    networks:
+      - fast-network
+  
+  nginx:
+    container_name: fast-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    networks:
+      - fast-network
+
+networks:
+    fast-network:
+        driver: bridge
